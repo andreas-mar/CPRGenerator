@@ -1,6 +1,9 @@
 from flask import jsonify, Blueprint
 from app.DataAccess.Models import FirstNames, LastNames, User
 from app import db
+from app.BusinessLogic.FictionalPerson import FictionalPerson
+from app.BusinessLogic.CPRGenerator import CPRGenerator
+import datetime as dt
 
 api_bp = Blueprint(
     'api_bp', __name__,
@@ -10,31 +13,30 @@ api_bp = Blueprint(
 
 @api_bp.route('/get-persons/<int:amount>')
 def get_persons(amount):
-    firstnames = FirstNames.get_multiple(amount)
-    lastnames = LastNames.get_multiple(amount)
+    if amount > 100:
+        return 'Request too high', 400
+    start = dt.datetime.now() - dt.timedelta(days=365 * 100)
+    end = dt.datetime.now() - dt.timedelta(days=365 * 18)
     res = list()
-    for x, y in zip(firstnames, lastnames):
-        res.append({
-            'firstname': x.name,
-            'lastname': y.name
-        })
+    for i in range(amount):
+        firstname = FirstNames.get_single_firstname()
+        lastname = LastNames.get_single_lastname()
+        p = FictionalPerson(lastname.name, start, end)
+        p.first_name = firstname.name
+        res.append(p.to_dict())
 
     return jsonify(res)
 
 @api_bp.route('/get-person')
 def get_person():
-    firstname = FirstNames.get_single()
-    lastname = LastNames.get_single()
-    res = {
-        'firstname':firstname.name,
-        'lastname':lastname.name
-    }
+    firstname = FirstNames.get_single_firstname()
+    lastname = LastNames.get_single_lastname()
+    res = FictionalPerson(firstname.name, lastname.name, 'Male').to_dict()
     return jsonify(res)
 
-@api_bp.route('/get-CPR')
-def get_cpr():
-
-    return 'firstnames.name'
+@api_bp.route('/validate-cpr/<string:cpr>')
+def validate_cpr(cpr):
+    return jsonify({'valid': str(CPRGenerator().validate_CPR(cpr))})
 
 @api_bp.route('/init')
 def init_app():

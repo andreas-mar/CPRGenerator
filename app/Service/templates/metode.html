@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>CPR Generator - Metode</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="stylesheet"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="/">CPR Generator</a>
+        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                     href="/api-dokumentation">API</a>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+                                                     href="/metode">Metode</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Contact Section-->
+<section class="page-section">
+    <div class="container">
+        <!-- Contact Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5 mb-0">Udregning af CPR numre</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Contact Section Form-->
+        <div class="row justify-content-center">
+            <p>
+                CPR numre udregnes som defineret i CPR registrets dokumentation <a
+                    href="https://www.cpr.dk/media/17534/personnummeret-i-cpr.pdf">her.</a>
+                Historisk har CPR numre været selvvaliderende. Cifre 1-6 er fødselsdatoen, cifre 7-9 er et løbenummer og
+                det 10. cifer er et kontrolciffer. Det 7. tal er defineres ud fra fødeår, således at man kan udlede hvilket århunderede, der refereres til gennem nummeret.
+                Indtil 2007 kunne validiteten af CPR numre kontrolleres ved at tage dot produktet af en vektor af de
+                først ni cifre og en vektor af kontrolcifret 432765432.
+                Dette resultat divideres med 11, og hvis resten er lige det sidste ciffer i CPR nummeret, er det validt.
+                Metoden kaldes modulo 11, og et CPR nummer er validt hvis hvis nedenstående udtryk er sandt:
+            </p>
+            <p>
+                \[a = \overrightarrow{n_9} \cdot \overrightarrow{c} \mod 11 \]
+                Hvor \(a \) er værdien af det sidste ciffer i CPR nummeret, \(\overrightarrow{c} \) er vektoren af kontrolcifre
+                og \(\overrightarrow{n_9} \) er vektoren af CPR nummerets første 9 cifre.
+                Tages der udgangspunkt i en kvinde med CPR nummer 111111-1118:
+            </p>
+            <p>
+                \[\begin{bmatrix} 1 \cr 1 \cr 1 \cr 1 \cr 1 \cr 1 \cr 1 \cr 1 \cr 1 \end{bmatrix} \cdot \begin{bmatrix} 4 \cr 3 \cr 2 \cr 7 \cr 6 \cr 5 \cr 4 \cr 3 \cr 2 \end{bmatrix} \mod 11 = 8 \]
+                Dette svarer til vedkommendes kontrolciffer, og CPR nummeret er validt. Der findes dog nogle få CPR numre, der ikke længere efterlever den validering, dog kan det til- eller fravælges her på sitet,
+                da der stadig findes IT systemer, der forventer at modtage CPR numre, der er opfylder modulo 11 valideringsreglen.
+            </p>
+        </div>
+
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5 mb-0">Oprettelse af falsk
+            person</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Contact Section Form-->
+        <div class="row justify-content-center">
+            <p>De personer, der oprettes er falske, og genereres som følger.
+                Gennem folkekirkens opgørelse af kendte efternavne, er der defineret de mulige efternavne, som en falsk
+                person kan påtage sig ( n = ca. 8.000).
+                Der udvælges ét efternavn til den falske person, og dette efternavn bliver tilføjet til en liste over
+                alle de falske personer.
+                For hvert navn udregnes der et CPR nummer, og dette afgør personens køn. Herefter tilkobles der et
+                fornavn fra den liste af fornavne, som passer til kønnet.
+                Danmarks Statistik (DST) har en offentlig opgørelse over alle godkendte drenge- og pigenavne, hvilket er
+                datagrundlaget for fornavnene (n = ca. 22.000).
+
+            </p>
+
+        </div>
+    </div>
+</section>
+<!-- Footer-->
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <!-- Footer Location-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+            </div>
+            <!-- Footer Social Icons-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">Omkring sitet</h4>
+                <p>
+                    Denne side har det enkle formål at oprette ikke-eksisterende personer med henblik på at indsætte dem
+                    som cases i IT systemer, der skal testes. Metodikken følger CPR-nummerets algoritme, som kan findes
+                    <a href="https://da.wikipedia.org/wiki/CPR-nummer">her</a>.
+                    Der findes yderligere en API, der kan tilgås <a
+                        href="https://cpr-generator.herokuapp.com/api">her</a>.
+                </p>
+            </div>
+            <!-- Footer About Text-->
+            <div class="col-lg-4">
+                <!-- <h4 class="text-uppercase mb-4">About Freelancer</h4> -->
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

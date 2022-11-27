@@ -10,12 +10,27 @@ class FirstNames(db.Model):
     male_name = db.Column(db.Boolean, unique=False, nullable=False)
 
     @classmethod
-    def get_single(cls):
+    def get_single_firstname(cls) -> 'FirstNames':
         return cls.query.order_by(func.random()).first()
 
     @classmethod
-    def get_multiple(cls, amount):
+    def clean_odd_firstnames(cls):
+        cls.query.filter(name="Andreas").delete()
+        db.session.commit()
+
+
+
+    @classmethod
+    def get_single_firstname_by_gender(cls, gender) -> 'FirstNames':
+        return cls.query.filter_by(male_name=gender).order_by(func.random()).first()
+
+    @classmethod
+    def get_multiple_firstnames(cls, amount: int) -> list:
         return cls.query.order_by(func.random()).limit(amount)
+
+    @classmethod
+    def get_multiple_firstnames_by_gender(cls, amount: int, gender: bool) -> list:
+        return cls.query.filter_by(male_name=gender).order_by(func.random()).limit(amount)
 
 
 class LastNames(db.Model):
@@ -25,11 +40,11 @@ class LastNames(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
 
     @classmethod
-    def get_single(cls):
+    def get_single_lastname(cls) -> 'LastNames':
         return cls.query.order_by(func.random()).first()
 
     @classmethod
-    def get_multiple(cls, amount):
+    def get_multiple_lastnames(cls, amount: int) -> list:
         return cls.query.order_by(func.random()).limit(amount)
 
 class User(db.Model):
