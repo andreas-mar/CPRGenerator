@@ -29,10 +29,13 @@ def get_persons(amount):
 
 @api_bp.route('/get-person')
 def get_person():
-    firstname = FirstNames.get_single_firstname()
+    start = (dt.datetime.now() - dt.timedelta(days=365 * 100)).date()
+    end = (dt.datetime.now() - dt.timedelta(days=365 * 18)).date()
     lastname = LastNames.get_single_lastname()
-    res = FictionalPerson(firstname.name, lastname.name, 'Male').to_dict()
-    return jsonify(res)
+    p = FictionalPerson(lastname.name, start, end)
+    is_male = int(p.cpr[-1]) % 2 == 0
+    p.firstname = FirstNames.get_single_firstname_by_gender(gender=is_male).name
+    return jsonify(p.to_dict())
 
 @api_bp.route('/validate-cpr/<string:cpr>')
 def validate_cpr(cpr):

@@ -50,7 +50,7 @@
             <div class="divider-custom-line"></div>
         </div>
         <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0">Generér falsker personer nedenfor. For metodik, se her</p>
+        <p class="masthead-subheading font-weight-light mb-0">Generér falsker personer nedenfor. For metodik, se <a href="/metode" style="color:#030764">her</a></p>
     </div>
 </header>
 <!-- Contact Section-->
@@ -69,7 +69,7 @@
             <div class="col-lg-8 col-xl-7">
                 <form id="submitForm" method="post">
                     <div class="form-floating mb-3">
-                        <input required class="form-control" id="amount" name="amount" type="number" min="1" max="500"
+                        <input required class="form-control" id="amount" name="amount" type="number" min="1" max="100"
                                value="25"/>
                         <label for="amount">Antal personer, der skal genereres</label>
                     </div>
@@ -147,9 +147,9 @@
                 <p>
                     Denne side har det enkle formål at oprette ikke-eksisterende personer med henblik på at indsætte dem
                     som cases i IT systemer, der skal testes. Metodikken følger CPR-nummerets algoritme, som kan findes
-                    <a href="https://da.wikipedia.org/wiki/CPR-nummer">her</a>.
-                    Der findes yderligere en API, der kan tilgås <a
-                        href="https://cpr-generator.herokuapp.com/api">her</a>.
+                    <a href="https://www.cpr.dk/media/17534/personnummeret-i-cpr.pdf">på cpr.dk</a>. Der kan yderligere læses mere på <a href="https://da.wikipedia.org/wiki/CPR-nummer">Wikipedia</a>.
+                    Der findes yderligere en API for programmatisk at lave falske personer, der kan tilgås <a
+                        href="/api-dokumentation">her</a>.
                 </p>
             </div>
             <!-- Footer About Text-->

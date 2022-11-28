@@ -25,11 +25,17 @@ def home():
 
             res = list()
             count = 0
+            current_errors = 0
             while count < amount:
+                current_errors += 1
+                if current_errors > 25: # Very bad solution.
+                    break
                 lastname = LastNames.get_single_lastname().name
                 p = FictionalPerson(lastname, start, end)
-                if not p.validate_CPR(p.cpr) and mod11:
+                if len(p.cpr) > 10:
                     continue
+                #if not p.validate_CPR(p.cpr) and mod11:
+                #    continue
                 if gender == 'male':
                     if p.is_male != 'Mand':
                         continue
@@ -42,6 +48,7 @@ def home():
                     p.first_name = FirstNames.get_single_firstname().name
                 res.append(p)
                 count += 1
+                current_errors = 0
 
         except:
             error = 'Invalid input'

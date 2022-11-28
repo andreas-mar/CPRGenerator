@@ -5,6 +5,8 @@ from faker import Faker
 class CPRGenerator:
     def __init__(self, start: dt.datetime.date = None, end: dt.datetime.date = None, bootstrap: bool = False):
         self.control = np.array([int(n) for n in str(432765432)])
+        fake = Faker()
+        self.birthdate = fake.date_time_between(start_date=start, end_date=end).date()
         if bootstrap:
             self.start = start
             self.end = end
@@ -27,10 +29,9 @@ class CPRGenerator:
         control_digit = 11 - remainder
         return control_digit
     def create_new_CPR(self) -> str:
-        fake = Faker()
-        date = fake.date_time_between(start_date=self.start, end_date=self.end).date()
-        first_six_digits = date.strftime('%d%m%y')
-        year = date.year
+
+        first_six_digits = self.birthdate.strftime('%d%m%y')
+        year = self.birthdate.year
         seventh_digit_options = []
         if year < 2000 and year >= 1900:
             seventh_digit_options.extend([0, 1, 2, 3])
