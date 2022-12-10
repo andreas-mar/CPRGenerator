@@ -15,12 +15,17 @@ class FictionalPerson(CPRGenerator):
         self.is_male = 'Mand' if int(self.cpr) % 2 == 0 else 'Kvinde'
         self.mod_11_check = self.validate_CPR(self.cpr)
         self.firstname = 'none'
+        self.age = self._get_age()
 
+    def _get_age(self):
+        today = dt.date.today()
+        return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
     def to_dict(self):
         return {'first_name' : self.firstname,
                 'last_name': self.last_name,
                 'cpr': self.cpr,
                 'birthdate': self.birthdate,
+                'age': self.age,
                 'gender': self.is_male,
                 'cpr_no_dash': self.cpr_no_dash,
                 'mod_11_compliant': str(self.mod_11_check)}

@@ -95,7 +95,10 @@
                 For hvert navn udregnes der et CPR nummer, og dette afgør personens køn. Herefter tilkobles der et
                 fornavn fra den liste af fornavne, som passer til kønnet.
                 Danmarks Statistik (DST) har en offentlig opgørelse over alle godkendte drenge- og pigenavne, hvilket er
-                datagrundlaget for fornavnene (n = ca. 22.000).
+                datagrundlaget for fornavnene (n = ca. 22.000). Ud fra det tilddelte CPR nummer, udregnes personens fødselsdato og nuværende alder.
+                Slutteligt valideres CPR nummeret med modulo 11 endnu en gang, såfremt denne mulighed er valgt.
+                Som udgangspunkt forsøges modulo 11 reglen opfyldt, uafgængigt af om det er tilvalgt eller ej,
+                dog vil CPR-numre, der ikke overholder reglen kun forekomme, hvis denne mulighed er fravalgt.
 
             </p>
 
